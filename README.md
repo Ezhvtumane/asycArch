@@ -5,16 +5,18 @@ repo for async architecture lessons
 https://miro.com/app/board/uXjVM1BbegE=/?moveToWidget=3458764560929378256&cot=14
 
 Event storming:
-![img.png](img.png)
+![img.png](event_storming.png)
+
+![alt text](https://github.com/Ezhvtumane/asycArch/blob/first-homework-developing/event_storming.png?raw=true)
 
 Data model:
-![img_1.png](img_1.png)
+![](data_model.png)
 
 Domains:
-![img_2.png](img_2.png)
+![](domains.png)
 
 Services:
-![img_3.png](img_3.png)
+![](services.png)
 
 Data entities:
-![img_4.png](img_4.png)
+![](data_entities.png)
