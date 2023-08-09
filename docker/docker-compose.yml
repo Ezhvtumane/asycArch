@@ -49,6 +49,8 @@ services:
       - 5432:5432
     volumes:
       - postgres-db:/var/lib/postgresql/data
+      - ./db/task.sql:/docker-entrypoint-initdb.d/task.sql
+      - ./db/auth.sql:/docker-entrypoint-initdb.d/auth.sql
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres

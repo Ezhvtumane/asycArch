@@ -1,0 +1,49 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: sso
+  # Spring JDBC configuration
+  datasource:
+    url: jdbc:postgresql://postgres:5432/auth
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  # Spring Data JPA configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+  #
+  #  security:
+  #    oauth2:
+  #      authorizationserver:
+  #        client:
+  #          oidc-client:
+  #            registration:
+  #              client-id: "oidc-client"
+  #              client-secret: "{noop}secret"
+  #              client-authentication-methods:
+  #                - "client_secret_basic"
+  #              authorization-grant-types:
+  #                - "authorization_code"
+  #                - "refresh_token"
+  #              redirect-uris:
+  #                - "http://localhost:7777/example"
+  ##              post-logout-redirect-uris:
+  ##                - "http://127.0.0.1:8080/"
+  #              scopes:
+  #                - "openid"
+  #                - "profile"
+  #            require-authorization-consent: true
+
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: group-id
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer

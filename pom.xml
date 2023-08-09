@@ -11,19 +11,21 @@
 
     <modules>
         <module>template</module>
+        <module>auth</module>
+        <module>taskTracker</module>
     </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.13</version>
+        <version>3.1.2</version> <!--2.7.13-->
     </parent>
 
     <properties>
         <!--<spring-boot-version>2.7.13</spring-boot-version>-->
         <postgresql.version>42.6.0</postgresql.version>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
