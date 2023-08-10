@@ -1,4 +1,4 @@
-package com.georgyorlov.service.kafka;
+package com.georgyorlov.task.service.kafka;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;

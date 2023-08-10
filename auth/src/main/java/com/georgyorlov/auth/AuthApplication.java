@@ -1,12 +1,12 @@
-package com.georgyorlov;
+package com.georgyorlov.auth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TaskTracker {
+public class AuthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TaskTracker.class, args);
+        SpringApplication.run(AuthApplication.class, args);
     }
 }
