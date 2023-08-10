@@ -29,7 +29,8 @@ public class JwtAuthenticationConfig {
                 .requestMatchers(
                     "/error",
                     "/login",
-                    "/logout"
+                    "/logout",
+                    "/api/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             );
