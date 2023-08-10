@@ -51,10 +51,27 @@ services:
       - postgres-db:/var/lib/postgresql/data
       - ./db/task.sql:/docker-entrypoint-initdb.d/task.sql
       - ./db/auth.sql:/docker-entrypoint-initdb.d/auth.sql
+      - ./db/keycloak.sql:/docker-entrypoint-initdb.d/keycloak.sql
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+  keycloak:
+    image: sleighzy/keycloak
+    container_name: keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8484:8080
+    depends_on:
+      - postgres
 
 volumes:
   postgres-db:
