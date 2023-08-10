@@ -1,7 +1,7 @@
-package com.georgyorlov.task.service.kafka;
+package com.georgyorlov.auth.service.kafka;
 
-import com.georgyorlov.task.dto.kafka.UserCreatedEventDTO;
-import com.georgyorlov.task.dto.kafka.UserUpdatedEventDTO;
+import com.georgyorlov.auth.dto.kafka.UserCreatedEventDTO;
+import com.georgyorlov.auth.dto.kafka.UserUpdatedEventDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

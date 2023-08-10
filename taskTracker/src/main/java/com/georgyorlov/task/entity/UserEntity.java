@@ -1,4 +1,4 @@
-package com.georgyorlov.entity;
+package com.georgyorlov.task.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,4 +1,4 @@
-package com.georgyorlov.dto;
+package com.georgyorlov.auth.dto;
 
 import lombok.Data;
 

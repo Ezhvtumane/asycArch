@@ -1,13 +1,13 @@
-package com.georgyorlov.service;
+package com.georgyorlov.auth.service;
 
-import com.georgyorlov.dto.UserCreateDTO;
-import com.georgyorlov.dto.UserUpdateDTO;
-import com.georgyorlov.dto.kafka.UserCreatedEventDTO;
-import com.georgyorlov.dto.kafka.UserUpdatedEventDTO;
-import com.georgyorlov.entity.Role;
-import com.georgyorlov.entity.UserEntity;
-import com.georgyorlov.repository.UserRepository;
-import com.georgyorlov.service.kafka.KafkaSenderService;
+import com.georgyorlov.auth.dto.UserCreateDTO;
+import com.georgyorlov.auth.dto.UserUpdateDTO;
+import com.georgyorlov.auth.dto.kafka.UserCreatedEventDTO;
+import com.georgyorlov.auth.dto.kafka.UserUpdatedEventDTO;
+import com.georgyorlov.auth.entity.Role;
+import com.georgyorlov.auth.entity.UserEntity;
+import com.georgyorlov.auth.repository.UserRepository;
+import com.georgyorlov.auth.service.kafka.KafkaSenderService;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

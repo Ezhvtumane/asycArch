@@ -1,6 +1,6 @@
-package com.georgyorlov.controller;
+package com.georgyorlov.auth.controller;
 
-import com.georgyorlov.dto.LoginRequestDTO;
+import com.georgyorlov.auth.dto.LoginRequestDTO;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;

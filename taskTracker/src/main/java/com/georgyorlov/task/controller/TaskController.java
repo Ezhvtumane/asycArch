@@ -1,8 +1,8 @@
-package com.georgyorlov.controller;
+package com.georgyorlov.task.controller;
 
-import com.georgyorlov.entity.ExampleEntity;
-import com.georgyorlov.service.ExampleService;
-import com.georgyorlov.service.kafka.KafkaSenderService;
+import com.georgyorlov.task.entity.TaskEntity;
+import com.georgyorlov.task.service.TaskService;
+import com.georgyorlov.task.service.kafka.KafkaSenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/example")
 @RequiredArgsConstructor
-public class ExampleController {
+public class TaskController {
 
-    private final ExampleService exampleService;
+    private final TaskService taskService;
     private final KafkaSenderService kafkaSenderService;
 
     @PostMapping
-    public ExampleEntity createExampleEntity(@RequestBody String text) {
-        return exampleService.createAndSaveExampleEntity(text);
+    public TaskEntity createTaskEntity(@RequestBody String descritpion) {
+        return taskService.createTaskEntity(descritpion);
     }
 
     @GetMapping("/{id}")
-    public ExampleEntity findById(@PathVariable("id") Long id) {
-        return exampleService.findById(id);
+    public TaskEntity findById(@PathVariable("id") Long id) {
+        return taskService.findById(id);
     }
 
     @PostMapping("/kafka-test")

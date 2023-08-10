@@ -1,9 +1,9 @@
-package com.georgyorlov.dto.kafka;
+package com.georgyorlov.task.dto.kafka;
 
 import lombok.Data;
 
 @Data
-public class UserCreatedEventDTO {
+public class UserUpdatedEventDTO {
 
     private String login;
     private String publicId;

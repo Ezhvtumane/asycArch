@@ -1,9 +1,9 @@
-package com.georgyorlov.controller;
+package com.georgyorlov.auth.controller;
 
-import com.georgyorlov.dto.UserCreateDTO;
-import com.georgyorlov.dto.UserUpdateDTO;
-import com.georgyorlov.entity.UserEntity;
-import com.georgyorlov.service.UserService;
+import com.georgyorlov.auth.dto.UserCreateDTO;
+import com.georgyorlov.auth.dto.UserUpdateDTO;
+import com.georgyorlov.auth.entity.UserEntity;
+import com.georgyorlov.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

@@ -1,4 +1,4 @@
-package com.georgyorlov.dto.kafka;
+package com.georgyorlov.auth.dto.kafka;
 
 import lombok.Data;
 

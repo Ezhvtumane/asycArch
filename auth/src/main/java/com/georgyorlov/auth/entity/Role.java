@@ -1,4 +1,4 @@
-package com.georgyorlov.entity;
+package com.georgyorlov.auth.entity;
 
 public enum Role {
 
