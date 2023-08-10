@@ -1,4 +1,4 @@
-package com.georgyorlov.config;
+package com.georgyorlov.auth.config;
 
 import java.util.Collection;
 import java.util.List;

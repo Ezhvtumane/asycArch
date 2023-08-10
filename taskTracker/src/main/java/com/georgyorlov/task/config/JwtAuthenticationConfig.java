@@ -1,4 +1,4 @@
-package com.georgyorlov.config;
+package com.georgyorlov.task.config;
 
 import java.util.Collection;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.georgyorlov.service.kafka;
+package com.georgyorlov.auth.service.kafka;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.georgyorlov.service.kafka;
+package com.georgyorlov.task.service.kafka;
 
 import com.georgyorlov.dto.kafka.UserCreatedEventDTO;
 import com.georgyorlov.dto.kafka.UserUpdatedEventDTO;
