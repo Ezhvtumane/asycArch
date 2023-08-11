@@ -1,7 +1,6 @@
 package com.georgyorlov.task.service.kafka;
 
-import com.georgyorlov.task.dto.kafka.UserCreatedEventDTO;
-import com.georgyorlov.task.dto.kafka.UserUpdatedEventDTO;
+import com.georgyorlov.task.dto.kafka.UserEventDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -10,19 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaListenerService {
 
-    @KafkaListener(topics = "example", groupId = "group-id")
-    public void listen(String message) {
-        System.out.println("Received Messasge in group - group-id: " + message);
-    }
-
     @KafkaListener(topics = "user-streaming", groupId = "group-id")
-    public void listenUserCreatedEventDTO(UserCreatedEventDTO userCreatedEventDTO) {
-        log.info("Received Messasge in group - group-id: {}", userCreatedEventDTO);
-    }
-
-    @KafkaListener(topics = "user-streaming", groupId = "group-id")
-    public void listenUserUpdatedEventDTO(UserUpdatedEventDTO userUpdatedEventDTO) {
-        log.info("Received Messasge in group - group-id: {}", userUpdatedEventDTO);
+    public void listenUserStreamingEventDTO(UserEventDTO userEventDTO) {
+        log.info("[listenUserCreatedEventDTO] Received Messasge in group - group-id: {}", userEventDTO);
     }
 
 }

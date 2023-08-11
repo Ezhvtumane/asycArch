@@ -1,9 +1,13 @@
 package com.georgyorlov.task.dto.kafka;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class UserUpdatedEventDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserEventDTO {
 
     private String login;
     private String publicId;

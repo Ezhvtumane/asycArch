@@ -2,8 +2,7 @@ package com.georgyorlov.auth.service;
 
 import com.georgyorlov.auth.dto.UserCreateDTO;
 import com.georgyorlov.auth.dto.UserUpdateDTO;
-import com.georgyorlov.auth.dto.kafka.UserCreatedEventDTO;
-import com.georgyorlov.auth.dto.kafka.UserUpdatedEventDTO;
+import com.georgyorlov.auth.dto.kafka.UserEventDTO;
 import com.georgyorlov.auth.entity.Role;
 import com.georgyorlov.auth.entity.UserEntity;
 import com.georgyorlov.auth.repository.UserRepository;
@@ -61,20 +60,19 @@ public class UserService {
 
     @Async
     public void sendUserCreatedEvent(UserEntity user) {
-        UserCreatedEventDTO userCreatedEventDTO = new UserCreatedEventDTO();
-        userCreatedEventDTO.setLogin(user.getLogin());
-        userCreatedEventDTO.setPublicId(user.getPublicId().toString());
-        userCreatedEventDTO.setRole(user.getRole().name());
-        kafkaSenderService.sendUserCreatedEvent(userCreatedEventDTO, "user-streaming");
+        UserEventDTO userEventDTO = new UserEventDTO();
+        userEventDTO.setLogin(user.getLogin());
+        userEventDTO.setPublicId(user.getPublicId().toString());
+        userEventDTO.setRole(user.getRole().name());
+        kafkaSenderService.sendUserStreamingEvent(userEventDTO, "user-streaming");
     }
 
     @Async
     public void sendUserUpdatedEvent(UserEntity user) {
-        UserUpdatedEventDTO userUpdatedEventDTO = new UserUpdatedEventDTO();
-        userUpdatedEventDTO.setLogin(user.getLogin());
-        userUpdatedEventDTO.setPublicId(user.getPublicId().toString());
-        userUpdatedEventDTO.setRole(user.getRole().name());
-        kafkaSenderService.sendUserUpdatedEvent(userUpdatedEventDTO, "user-streaming");
+        UserEventDTO userEventDTO = new UserEventDTO();
+        userEventDTO.setLogin(user.getLogin());
+        userEventDTO.setPublicId(user.getPublicId().toString());
+        userEventDTO.setRole(user.getRole().name());
+        kafkaSenderService.sendUserStreamingEvent(userEventDTO, "user-streaming");
     }
-
 }
