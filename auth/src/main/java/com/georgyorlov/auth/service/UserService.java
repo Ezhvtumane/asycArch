@@ -45,13 +45,18 @@ public class UserService {
             .orElseThrow(() -> new RuntimeException("No entity found by id: " + id));
     }
 
+    public UserEntity findByPublicId(UUID publicId) {
+        return userRepository.findByPublicId(publicId)
+            .orElseThrow(() -> new RuntimeException("No entity found by id: " + publicId));
+    }
+
     public List<UserEntity> findAll() {
         return userRepository.findAll();
     }
 
     @Transactional
-    public UserEntity updateUser(Long id, UserUpdateDTO dto) {
-        UserEntity userEntity = findById(id);
+    public UserEntity updateUser(UUID publicId, UserUpdateDTO dto) {
+        UserEntity userEntity = findByPublicId(publicId);
         userEntity.setRole(Role.valueOf(dto.getRole()));
         UserEntity updatedUser = save(userEntity);
         sendUserUpdatedEvent(updatedUser);
