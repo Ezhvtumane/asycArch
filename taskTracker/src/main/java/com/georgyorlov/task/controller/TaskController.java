@@ -4,7 +4,6 @@ import com.georgyorlov.task.entity.TaskEntity;
 import com.georgyorlov.task.service.TaskService;
 import com.georgyorlov.task.service.kafka.KafkaSenderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,9 +29,4 @@ public class TaskController {
         return taskService.findById(id);
     }
 
-    @PostMapping("/kafka-test")
-    public ResponseEntity kafkaTest(@RequestBody String text) {
-        kafkaSenderService.sendMessage(text);
-        return ResponseEntity.ok().build();
-    }
 }
