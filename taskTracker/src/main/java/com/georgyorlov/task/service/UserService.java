@@ -17,28 +17,42 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public UserEntity createOrUpdateFromUserStreaming(UserEventDTO userEventDTO) {
-        UserEntity byPublicId = userRepository.findByPublicId(UUID.fromString(userEventDTO.getPublicId()))
-            .orElseGet(() -> createAndSaveUserEntity(userEventDTO));
-        return byPublicId;
+    public void createOrUpdateFromUserStreaming(UserEventDTO userEventDTO) {
+        userRepository
+            .findByPublicId(userEventDTO.getPublicId())
+            .ifPresentOrElse(
+                task -> {
+                    task.setRole(Role.valueOf(userEventDTO.getRole()));
+                    save(task);
+                },
+                () -> {
+                    createAndSaveUserEntity(userEventDTO);
+                }
+            );
     }
 
-    private UserEntity createAndSaveUserEntity(UserEventDTO dto) {
+    private void createAndSaveUserEntity(UserEventDTO dto) {
         UserEntity user = new UserEntity();
         user.setLogin(dto.getLogin());
         user.setRole(Role.valueOf(dto.getRole()));
-        user.setPublicId(UUID.randomUUID());
-        return save(user);
+        user.setPublicId(dto.getPublicId());
+        save(user);
     }
 
     public UserEntity save(UserEntity userEntity) {
         return userRepository.save(userEntity);
     }
 
-
-    public List<UserEntity> findAll() {
-        return userRepository.findAll();
+    public UserEntity findByPublicId(UUID publicId) {
+        return userRepository.findByPublicId(publicId)
+            .orElseThrow(() -> new RuntimeException("No entity found by id: " + publicId));
     }
 
+    public List<UserEntity> findAllWorkers() {
+        return userRepository.findByRole(Role.WORKER);
+    }
 
+    public UUID getRandomWorkerPublicId() {
+        return userRepository.getRandomWorkerEntity().getPublicId();
+    }
 }

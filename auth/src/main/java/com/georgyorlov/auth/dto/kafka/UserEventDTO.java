@@ -1,12 +1,13 @@
 package com.georgyorlov.auth.dto.kafka;
 
+import java.util.UUID;
 import lombok.Data;
 
 @Data
 public class UserEventDTO {
 
     private String login;
-    private String publicId;
+    private UUID publicId;
     private String role;
 
 }

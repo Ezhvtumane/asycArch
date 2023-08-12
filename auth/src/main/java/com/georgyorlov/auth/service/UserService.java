@@ -24,7 +24,7 @@ public class UserService {
     @Transactional
     public UserEntity createUser(UserCreateDTO dto) {
         UserEntity savedUser = createAndSaveUserEntity(dto);
-        sendUserCreatedEvent(savedUser);
+        sendUserStreamingEvent(savedUser);
         return savedUser;
     }
 
@@ -38,11 +38,6 @@ public class UserService {
 
     public UserEntity save(UserEntity userEntity) {
         return userRepository.save(userEntity);
-    }
-
-    public UserEntity findById(Long id) {
-        return userRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("No entity found by id: " + id));
     }
 
     public UserEntity findByPublicId(UUID publicId) {
@@ -59,25 +54,17 @@ public class UserService {
         UserEntity userEntity = findByPublicId(publicId);
         userEntity.setRole(Role.valueOf(dto.getRole()));
         UserEntity updatedUser = save(userEntity);
-        sendUserUpdatedEvent(updatedUser);
+        sendUserStreamingEvent(updatedUser);
         return updatedUser;
     }
 
     @Async
-    public void sendUserCreatedEvent(UserEntity user) {
+    public void sendUserStreamingEvent(UserEntity user) {
         UserEventDTO userEventDTO = new UserEventDTO();
         userEventDTO.setLogin(user.getLogin());
-        userEventDTO.setPublicId(user.getPublicId().toString());
+        userEventDTO.setPublicId(user.getPublicId());
         userEventDTO.setRole(user.getRole().name());
         kafkaSenderService.sendUserStreamingEvent(userEventDTO, "user-streaming");
     }
 
-    @Async
-    public void sendUserUpdatedEvent(UserEntity user) {
-        UserEventDTO userEventDTO = new UserEventDTO();
-        userEventDTO.setLogin(user.getLogin());
-        userEventDTO.setPublicId(user.getPublicId().toString());
-        userEventDTO.setRole(user.getRole().name());
-        kafkaSenderService.sendUserStreamingEvent(userEventDTO, "user-streaming");
-    }
 }

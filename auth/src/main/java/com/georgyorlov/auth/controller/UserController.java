@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/api/user")
 @EnableMethodSecurity
@@ -25,9 +24,9 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/{id}")
-    public UserEntity findById(@PathVariable("public_id") String publicId) {//DTO return
-        return userService.findByPublicId(UUID.fromString(publicId));
+    @GetMapping("/{public_id}")
+    public UserEntity findByPublicId(@PathVariable("public_id") UUID publicId) {//DTO return
+        return userService.findByPublicId(publicId);
     }
 
     @PostMapping
@@ -42,10 +41,10 @@ public class UserController {
     @PutMapping("/{public_id}")
     //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> updateUser(
-        @PathVariable("public_id") String publicId,
+        @PathVariable("public_id") UUID publicId,
         @RequestBody UserUpdateDTO dto
     ) {
-        UserEntity andSaveExampleEntity = userService.updateUser(UUID.fromString(publicId), dto);
+        UserEntity andSaveExampleEntity = userService.updateUser(publicId, dto);
         return ResponseEntity.ok(andSaveExampleEntity.getPublicId().toString());
     }
 }

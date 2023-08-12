@@ -1,5 +1,6 @@
 package com.georgyorlov.task.dto.kafka;
 
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class UserEventDTO {
 
     private String login;
-    private String publicId;
+    private UUID publicId;
     private String role;
 
 }
