@@ -9,10 +9,5 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
 
-  # Spring Data JPA configuration
-  jpa:
-    hibernate:
-      ddl-auto: update
-
   kafka:
     bootstrap-servers: localhost:29092
