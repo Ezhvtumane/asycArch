@@ -86,6 +86,6 @@ public class TaskService {
 
     private TaskEntity findByPublicId(UUID publicId) {
         return taskRepository.findByPublicId(publicId)
-            .orElseThrow();
+            .orElseThrow(() -> new RuntimeException("No entity found by id: " + publicId));
     }
 }

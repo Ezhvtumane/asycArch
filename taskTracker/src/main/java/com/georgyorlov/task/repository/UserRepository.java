@@ -18,5 +18,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
         + " WHERE role = 'WORKER' "
         + " ORDER BY random() LIMIT 1 ", nativeQuery = true)
     UserEntity getRandomWorkerEntity();
-
 }

@@ -7,5 +7,4 @@ public class UserCreateDTO {
 
     private String login;
     private String role;
-
 }

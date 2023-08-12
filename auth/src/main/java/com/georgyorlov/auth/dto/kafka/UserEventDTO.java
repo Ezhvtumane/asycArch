@@ -9,5 +9,4 @@ public class UserEventDTO {
     private String login;
     private UUID publicId;
     private String role;
-
 }

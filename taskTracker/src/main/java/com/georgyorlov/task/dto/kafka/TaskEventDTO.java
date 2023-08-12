@@ -11,5 +11,4 @@ public class TaskEventDTO {
     private UUID userPublicId;
     private Integer costAssaigning;
     private Integer costCompleting;
-
 }

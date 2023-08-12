@@ -33,16 +33,16 @@ public class UserService {
         return userRepository.getRandomWorkerEntity().getPublicId();
     }
 
+    private void updateUser(UserEntity user, UserEventDTO userEventDTO) {
+        user.setRole(Role.valueOf(userEventDTO.getRole()));
+        save(user);
+    }
+
     private void createAndSaveUserEntity(UserEventDTO dto) {
         UserEntity user = new UserEntity();
         user.setLogin(dto.getLogin());
         user.setRole(Role.valueOf(dto.getRole()));
         user.setPublicId(dto.getPublicId());
-        save(user);
-    }
-
-    private void updateUser(UserEntity user, UserEventDTO userEventDTO) {
-        user.setRole(Role.valueOf(userEventDTO.getRole()));
         save(user);
     }
 

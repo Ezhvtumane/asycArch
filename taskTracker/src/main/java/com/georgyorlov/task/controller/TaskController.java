@@ -5,6 +5,7 @@ import com.georgyorlov.task.entity.TaskEntity;
 import com.georgyorlov.task.service.TaskService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/task")
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class TaskController {
 
     private final TaskService taskService;
