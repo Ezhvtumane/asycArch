@@ -40,5 +40,4 @@ public class TaskEntity {
 
     @Column(name = "cost_completing")
     private Integer costCompleting;
-
 }
