@@ -35,7 +35,7 @@ public class TaskService {
         taskEntity.setCostCompleting(random.nextInt(40 - 20) + 20);
         TaskEntity savedTask = save(taskEntity);
 
-        sendTaskStreamingEvent(savedTask);
+        sendTaskAssignedEvent(savedTask);
 
         return savedTask;
     }
@@ -50,7 +50,10 @@ public class TaskService {
         TaskEntity byPublicId = findByPublicId(publicId);
         byPublicId.setTaskStatus(TaskStatus.DONE);
         TaskEntity savedTask = save(byPublicId);
-        sendTaskStreamingEvent(savedTask);
+
+        final TaskEventDTO taskEventDTO = createTaskEventDTO(savedTask);
+        kafkaSenderService.sendTaskDoneEvent(taskEventDTO);
+
         return savedTask;
     }
 
@@ -62,18 +65,23 @@ public class TaskService {
         task.setUserPublicId(randomWorkerPublicId);
         save(task);
 
-        sendTaskStreamingEvent(task);
+        sendTaskAssignedEvent(task);
     }
 
     @Async
-    public void sendTaskStreamingEvent(TaskEntity task) {
-        TaskEventDTO taskEventDTO = new TaskEventDTO();
+    public void sendTaskAssignedEvent(TaskEntity task) {
+        TaskEventDTO taskEventDTO = createTaskEventDTO(task);
+        kafkaSenderService.sendTaskAssignedEvent(taskEventDTO);
+    }
+
+    private TaskEventDTO createTaskEventDTO(TaskEntity task) {
+        final TaskEventDTO taskEventDTO = new TaskEventDTO();
         taskEventDTO.setDescription(task.getDescription());
         taskEventDTO.setPublicId(task.getPublicId());
         taskEventDTO.setUserPublicId(task.getUserPublicId());
         taskEventDTO.setCostAssaigning(task.getCostAssaigning());
         taskEventDTO.setCostCompleting(task.getCostCompleting());
-        kafkaSenderService.sendTaskStreamingEvent(taskEventDTO, "task-streaming");
+        return taskEventDTO;
     }
 
     private TaskEntity save(TaskEntity taskEntity) {

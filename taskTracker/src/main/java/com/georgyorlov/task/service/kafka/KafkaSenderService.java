@@ -13,8 +13,16 @@ public class KafkaSenderService {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendTaskStreamingEvent(TaskEventDTO taskEventDTO, String topicName) {
+    public void sendTaskAssignedEvent(TaskEventDTO taskEventDTO) {
+        String topicName = "task-assigned";
         log.info("sendTaskStreamingEvent {} to topic {}", taskEventDTO, topicName);
         kafkaTemplate.send(topicName, taskEventDTO);
     }
+
+    public void sendTaskDoneEvent(TaskEventDTO taskEventDTO) {
+        String topicName = "task-done";
+        log.info("sendTaskStreamingEvent {} to topic {}", taskEventDTO, topicName);
+        kafkaTemplate.send(topicName, taskEventDTO);
+    }
+
 }
