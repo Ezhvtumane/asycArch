@@ -8,7 +8,6 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,11 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-
-    @GetMapping("/{public_id}")
-    public UserEntity findByPublicId(@PathVariable("public_id") UUID publicId) {//DTO return
-        return userService.findByPublicId(publicId);
-    }
 
     @PostMapping
     //@PreAuthorize("hasRole('ADMIN')")

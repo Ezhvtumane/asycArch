@@ -40,33 +40,18 @@ public class TaskService {
         return savedTask;
     }
 
-    public TaskEntity save(TaskEntity taskEntity) {
-        return taskRepository.save(taskEntity);
-    }
-
-    public List<TaskEntity> findAllTasksInProgress() {
-        return taskRepository.findByTaskStatus(TaskStatus.IN_PROGRESS);
-    }
-
-    public TaskEntity findByPublicId(UUID publicId) {
-        return taskRepository.findByPublicId(publicId)
-            .orElseThrow();
-    }
-
-    @Async
-    public void sendTaskStreamingEvent(TaskEntity task) {
-        TaskEventDTO taskEventDTO = new TaskEventDTO();
-        taskEventDTO.setDescription(task.getDescription());
-        taskEventDTO.setPublicId(task.getPublicId());
-        taskEventDTO.setUserPublicId(task.getUserPublicId());
-        taskEventDTO.setCostAssaigning(task.getCostAssaigning());
-        taskEventDTO.setCostCompleting(task.getCostCompleting());
-        kafkaSenderService.sendTaskStreamingEvent(taskEventDTO, "task-streaming");
-    }
-
     public void shuffleTasks() {
         findAllTasksInProgress()
             .forEach(this::setNewWorkerAndSendTaskEvent);
+    }
+
+    @Transactional
+    public TaskEntity doneTask(UUID publicId) {
+        TaskEntity byPublicId = findByPublicId(publicId);
+        byPublicId.setTaskStatus(TaskStatus.DONE);
+        TaskEntity savedTask = save(byPublicId);
+        sendTaskStreamingEvent(savedTask);
+        return savedTask;
     }
 
     @Async
@@ -80,12 +65,27 @@ public class TaskService {
         sendTaskStreamingEvent(task);
     }
 
-    @Transactional
-    public TaskEntity doneTask(UUID publicId) {
-        TaskEntity byPublicId = findByPublicId(publicId);
-        byPublicId.setTaskStatus(TaskStatus.DONE);
-        TaskEntity savedTask = save(byPublicId);
-        sendTaskStreamingEvent(savedTask);
-        return savedTask;
+    @Async
+    public void sendTaskStreamingEvent(TaskEntity task) {
+        TaskEventDTO taskEventDTO = new TaskEventDTO();
+        taskEventDTO.setDescription(task.getDescription());
+        taskEventDTO.setPublicId(task.getPublicId());
+        taskEventDTO.setUserPublicId(task.getUserPublicId());
+        taskEventDTO.setCostAssaigning(task.getCostAssaigning());
+        taskEventDTO.setCostCompleting(task.getCostCompleting());
+        kafkaSenderService.sendTaskStreamingEvent(taskEventDTO, "task-streaming");
+    }
+
+    private TaskEntity save(TaskEntity taskEntity) {
+        return taskRepository.save(taskEntity);
+    }
+
+    private List<TaskEntity> findAllTasksInProgress() {
+        return taskRepository.findByTaskStatus(TaskStatus.IN_PROGRESS);
+    }
+
+    private TaskEntity findByPublicId(UUID publicId) {
+        return taskRepository.findByPublicId(publicId)
+            .orElseThrow();
     }
 }

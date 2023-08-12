@@ -7,7 +7,6 @@ import com.georgyorlov.auth.entity.Role;
 import com.georgyorlov.auth.entity.UserEntity;
 import com.georgyorlov.auth.repository.UserRepository;
 import com.georgyorlov.auth.service.kafka.KafkaSenderService;
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -28,27 +27,6 @@ public class UserService {
         return savedUser;
     }
 
-    private UserEntity createAndSaveUserEntity(UserCreateDTO dto) {
-        UserEntity user = new UserEntity();
-        user.setLogin(dto.getLogin());
-        user.setRole(Role.valueOf(dto.getRole()));
-        user.setPublicId(UUID.randomUUID());
-        return save(user);
-    }
-
-    public UserEntity save(UserEntity userEntity) {
-        return userRepository.save(userEntity);
-    }
-
-    public UserEntity findByPublicId(UUID publicId) {
-        return userRepository.findByPublicId(publicId)
-            .orElseThrow(() -> new RuntimeException("No entity found by id: " + publicId));
-    }
-
-    public List<UserEntity> findAll() {
-        return userRepository.findAll();
-    }
-
     @Transactional
     public UserEntity updateUser(UUID publicId, UserUpdateDTO dto) {
         UserEntity userEntity = findByPublicId(publicId);
@@ -67,4 +45,20 @@ public class UserService {
         kafkaSenderService.sendUserStreamingEvent(userEventDTO, "user-streaming");
     }
 
+    private UserEntity createAndSaveUserEntity(UserCreateDTO dto) {
+        UserEntity user = new UserEntity();
+        user.setLogin(dto.getLogin());
+        user.setRole(Role.valueOf(dto.getRole()));
+        user.setPublicId(UUID.randomUUID());
+        return save(user);
+    }
+
+    private UserEntity findByPublicId(UUID publicId) {
+        return userRepository.findByPublicId(publicId)
+            .orElseThrow(() -> new RuntimeException("No entity found by id: " + publicId));
+    }
+
+    private UserEntity save(UserEntity userEntity) {
+        return userRepository.save(userEntity);
+    }
 }

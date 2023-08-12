@@ -19,5 +19,4 @@ public class KafkaListenerService {
         log.info("[listenUserCreatedEventDTO] Received Messasge in group - group-id: {}", userEventDTO);
         userService.createOrUpdateFromUserStreaming(userEventDTO);
     }
-
 }

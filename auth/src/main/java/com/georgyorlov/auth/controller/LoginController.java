@@ -20,31 +20,22 @@ import org.springframework.web.client.RestTemplate;
 public class LoginController {
 
     private final RestTemplate restTemplate = new RestTemplate();
+    private final static String keycloakUrl = "http://localhost:8484/auth/realms/aa-realm/protocol/openid-connect/token";
 
     @PostMapping("/login")
     public String login(
         @RequestBody LoginRequestDTO loginRequestDTO
     ) {
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("client_id", "aa-client");
-        map.add("grant_type", "password");
-        map.add("scope", "openid");
-        map.add("username", loginRequestDTO.getLogin());
-        map.add("password", loginRequestDTO.getPassword());
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(map, httpHeaders);
-
         ParameterizedTypeReference<Map<String, String>> responseType =
             new ParameterizedTypeReference<>() {
             };
 
-        Map<String, String> body = restTemplate.exchange(
-            "http://localhost:8484/auth/realms/aa-realm/protocol/openid-connect/token",
+        final HttpEntity<MultiValueMap<String, String>> request = createRequest(loginRequestDTO);
+
+        final Map<String, String> body = restTemplate.exchange(
+            keycloakUrl,
             HttpMethod.POST,
-            entity,
+            request,
             responseType
         ).getBody();
 
@@ -54,5 +45,24 @@ public class LoginController {
         return tokenType
             + " "
             + accessToken;
+    }
+
+    private HttpEntity<MultiValueMap<String, String>> createRequest(LoginRequestDTO loginRequestDTO) {
+        final HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        final MultiValueMap<String, String> map = prepareParams(loginRequestDTO.getLogin(), loginRequestDTO.getPassword());
+
+        return new HttpEntity<>(map, httpHeaders);
+    }
+
+    private MultiValueMap<String, String> prepareParams(String login, String password) {
+        final MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("client_id", "aa-client");
+        map.add("grant_type", "password");
+        map.add("scope", "openid");
+        map.add("username", login);
+        map.add("password", password);
+        return map;
     }
 }

@@ -4,7 +4,6 @@ import com.georgyorlov.task.dto.kafka.UserEventDTO;
 import com.georgyorlov.task.entity.Role;
 import com.georgyorlov.task.entity.UserEntity;
 import com.georgyorlov.task.repository.UserRepository;
-import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,14 +20,17 @@ public class UserService {
         userRepository
             .findByPublicId(userEventDTO.getPublicId())
             .ifPresentOrElse(
-                task -> {
-                    task.setRole(Role.valueOf(userEventDTO.getRole()));
-                    save(task);
+                user -> {
+                    updateUser(user, userEventDTO);
                 },
                 () -> {
                     createAndSaveUserEntity(userEventDTO);
                 }
             );
+    }
+
+    public UUID getRandomWorkerPublicId() {
+        return userRepository.getRandomWorkerEntity().getPublicId();
     }
 
     private void createAndSaveUserEntity(UserEventDTO dto) {
@@ -39,20 +41,12 @@ public class UserService {
         save(user);
     }
 
-    public UserEntity save(UserEntity userEntity) {
+    private void updateUser(UserEntity user, UserEventDTO userEventDTO) {
+        user.setRole(Role.valueOf(userEventDTO.getRole()));
+        save(user);
+    }
+
+    private UserEntity save(UserEntity userEntity) {
         return userRepository.save(userEntity);
-    }
-
-    public UserEntity findByPublicId(UUID publicId) {
-        return userRepository.findByPublicId(publicId)
-            .orElseThrow(() -> new RuntimeException("No entity found by id: " + publicId));
-    }
-
-    public List<UserEntity> findAllWorkers() {
-        return userRepository.findByRole(Role.WORKER);
-    }
-
-    public UUID getRandomWorkerPublicId() {
-        return userRepository.getRandomWorkerEntity().getPublicId();
     }
 }

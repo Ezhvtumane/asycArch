@@ -17,5 +17,4 @@ public class KafkaSenderService {
         log.info("sendTaskStreamingEvent {} to topic {}", taskEventDTO, topicName);
         kafkaTemplate.send(topicName, taskEventDTO);
     }
-
 }
