@@ -36,7 +36,7 @@ public class TaskEntity {
     private UUID userPublicId;
 
     @Column(name = "cost_assigning")
-    private Integer costAssaigning;
+    private Integer costAssigning;
 
     @Column(name = "cost_completing")
     private Integer costCompleting;
