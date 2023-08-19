@@ -5,5 +5,7 @@ import lombok.Data;
 @Data
 public class TaskCreateDTO {
 
-    private String description;
+    private String title;
+    private String jiraId;
+
 }

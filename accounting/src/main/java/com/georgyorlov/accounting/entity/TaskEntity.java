@@ -1,4 +1,4 @@
-package com.georgyorlov.task.entity;
+package com.georgyorlov.accounting.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,11 +22,8 @@ public class TaskEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title") // migrate name and data in DB
-    private String title;
-
-    @Column(name = "jira_id") // migrate name and data in DB
-    private String jiraId;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "public_id")
     private UUID publicId;

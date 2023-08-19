@@ -2,11 +2,11 @@ package com.georgyorlov.auth.service;
 
 import com.georgyorlov.auth.dto.UserCreateDTO;
 import com.georgyorlov.auth.dto.UserUpdateDTO;
-import com.georgyorlov.auth.dto.kafka.UserEventDTO;
 import com.georgyorlov.auth.entity.Role;
 import com.georgyorlov.auth.entity.UserEntity;
 import com.georgyorlov.auth.repository.UserRepository;
 import com.georgyorlov.auth.service.kafka.KafkaSenderService;
+import com.georgyorlov.avro.schema.User;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -37,12 +37,14 @@ public class UserService {
     }
 
     @Async
-    public void sendUserStreamingEvent(UserEntity user) {
-        UserEventDTO userEventDTO = new UserEventDTO();
-        userEventDTO.setLogin(user.getLogin());
-        userEventDTO.setPublicId(user.getPublicId());
-        userEventDTO.setRole(user.getRole().name());
-        kafkaSenderService.sendUserStreamingEvent(userEventDTO, "user-streaming");
+    public void sendUserStreamingEvent(UserEntity userEntity) {
+        User user = User.newBuilder()
+            .setLogin(userEntity.getLogin())
+            .setPublicId(userEntity.getPublicId().toString())
+            .setRole(userEntity.getRole().toString())
+            .build();
+
+        kafkaSenderService.sendUserStreamingEvent(user, "user-streaming");
     }
 
     private UserEntity createAndSaveUserEntity(UserCreateDTO dto) {

@@ -1,3 +1,8 @@
+###Done task
+POST http://localhost:9092/api/task/e291c63e-3fcf-448a-8647-034d2f5fa42d/done
+Content-Type: application/json
+
+
 ###shuffle tasks
 POST http://localhost:9092/api/task/shuffle
 Content-Type: application/json
@@ -8,7 +13,7 @@ POST http://localhost:9092/api/task
 Content-Type: application/json
 
 {
-  "description": "task9"
+  "description": "task1"
 }
 
 
@@ -28,7 +33,7 @@ Content-Type: application/json
 #Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJyVmdTcUhLcDlVMVlyTzlNdUxUV0stREE5UVNZVzBlWnk4SnZwcWwyYlJ3In0.eyJleHAiOjE2OTE2NzUyMTIsImlhdCI6MTY5MTY3NDkxMiwianRpIjoiMDgzYTE5ZDEtN2M2MC00NWQ2LTlkOTUtMTExNTI0ZTBlMWI2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4NDg0L2F1dGgvcmVhbG1zL2FhLXJlYWxtIiwic3ViIjoiYzNiYjhlNDktZDlhYi00Y2JkLWI5MzYtMzZlY2Y0MTRhNDRmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWEtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6ImQwZmE4NjJhLWUzOWItNDBjNC05NzUzLThiMWYyYjZlNmU3NCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiV09SS0VSIl19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic2lkIjoiZDBmYTg2MmEtZTM5Yi00MGM0LTk3NTMtOGIxZjJiNmU2ZTc0IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ3b3JrZXIifQ.ZYPrbQ5PT9bXn22SwvkN6dUvWUOhuILP-jxh2kruTB-mt1xADd172RGJ-a7pWDScTvniHzMWBnUJHiwX8nXy9XxE0GqsjAIFxOuJX0OaVY0jQFWD4QhUHj7Im74zlbk31I3qwObW6Mzo75d4KWYxdQbZ1ei5CmTrSG-5DzJBkQXFEZuy0bVpOr0WyLCcEhm7X942kBM8jivV8k4oMfOQQee7gRC_E7WmAaedPAVUOF-dlMIwzrYwImZa5fdjJNGsChPfTiCtZFddLPiCsxPdyIBc8ykST5NEUTThF_8znKvmH2pCPSTfZs3HQnVk-sAgv8lfwCBXmbY_LgpEgyNfcg
 
 {
-  "login": "admin2",
+  "login": "admin",
   "role": "ADMIN"
 }
 
@@ -52,3 +57,9 @@ grant_type = password &
 scope = openid &
 username = admin &
 password = admin
+
+###
+POST http://localhost:9081/example/kafka-test
+Content-Type: application/json
+
+"adad"

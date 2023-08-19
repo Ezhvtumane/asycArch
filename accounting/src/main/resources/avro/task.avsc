@@ -5,11 +5,7 @@
     "namespace": "com.georgyorlov.avro.schema",
     "fields": [
       {
-        "name": "title",
-        "type": "string"
-      },
-      {
-        "name": "jiraId",
+        "name": "description",
         "type": "string"
       },
       {
