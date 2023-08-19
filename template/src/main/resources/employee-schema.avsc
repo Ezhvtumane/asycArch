@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "Employee",
+  "namespace": "com.georgyorlov.schema",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int"
+    },
+    {
+      "name": "firstName",
+      "type": "string"
+    }
+  ]
+}
