@@ -2,7 +2,10 @@ package com.georgyorlov.controller;
 
 import com.georgyorlov.entity.ExampleEntity;
 import com.georgyorlov.service.ExampleService;
+import com.georgyorlov.service.kafka.ExampleStreamProducer;
 import com.georgyorlov.service.kafka.KafkaSenderService;
+import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ public class ExampleController {
 
     private final ExampleService exampleService;
     private final KafkaSenderService kafkaSenderService;
+    private final ExampleStreamProducer exampleStreamProducer;
 
     @PostMapping
     public ExampleEntity createExampleEntity(@RequestBody String text) {
@@ -31,8 +35,8 @@ public class ExampleController {
     }
 
     @PostMapping("/kafka-test")
-    public ResponseEntity kafkaTest(@RequestBody String text) {
-        kafkaSenderService.sendMessage(text);
+    public ResponseEntity kafkaTest(@RequestBody String text) throws RestClientException, IOException {
+        exampleStreamProducer.produceEmployeeDetails(0, "test", "test");
         return ResponseEntity.ok().build();
     }
 }

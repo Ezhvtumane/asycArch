@@ -38,3 +38,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
+/template/src/main/java/com/georgyorlov/schema/
