@@ -22,8 +22,8 @@ public class TaskEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "description")
-    private String description;
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "public_id")
     private UUID publicId;

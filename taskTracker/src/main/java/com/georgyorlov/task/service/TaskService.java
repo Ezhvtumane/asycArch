@@ -31,7 +31,7 @@ public class TaskService {
         TaskEntity taskEntity = new TaskEntity();
         taskEntity.setPublicId(UUID.randomUUID());
         taskEntity.setTaskStatus(TaskStatus.IN_PROGRESS);
-        taskEntity.setDescription(taskCreateDTO.getDescription());
+        taskEntity.setTitle(taskCreateDTO.getDescription());
         taskEntity.setUserPublicId(userService.getRandomWorkerPublicId());
         taskEntity.setCostAssigning(random.nextInt(20 - 10) + 10); //-?
         taskEntity.setCostCompleting(random.nextInt(40 - 20) + 20);
@@ -97,7 +97,7 @@ public class TaskService {
     private TaskStreaming createTaskStreamingEventData(TaskEntity taskEntity) {
         return TaskStreaming.newBuilder()
             .setPublicId(taskEntity.getPublicId().toString())
-            .setDescription(taskEntity.getDescription())
+            .setTitle(taskEntity.getTitle())
             .setCostAssigning(taskEntity.getCostAssigning())
             .setCostCompleting(taskEntity.getCostCompleting())
             .build();

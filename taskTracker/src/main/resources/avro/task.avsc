@@ -5,7 +5,7 @@
     "namespace": "com.georgyorlov.avro.schema",
     "fields": [
       {
-        "name": "description",
+        "name": "title",
         "type": "string"
       },
       {
