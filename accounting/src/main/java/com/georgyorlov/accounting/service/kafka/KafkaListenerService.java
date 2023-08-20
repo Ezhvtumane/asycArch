@@ -32,6 +32,12 @@ public class KafkaListenerService {
         taskService.createOrUpdateFromTaskStreaming(record.value());
     }
 
+    @KafkaListener(topics = "task-streaming-v2", groupId = "group-accounting")
+    public void listenTaskStreamingEventDTOV2(ConsumerRecord<String, TaskStreaming> record) {
+        log.info("[listenTaskStreamingEventDTO] Received Messasge in group - group-id: {}", record.value());
+        taskService.createOrUpdateFromTaskStreaming(record.value());
+    }
+
     @KafkaListener(topics = "task-assigned", groupId = "group-accounting")
     public void listenTaskAssignEventDTO(ConsumerRecord<String, TaskAssign> record) {
         log.info("[listenTaskAssignEventDTO] Received Messasge in group - group-id: {}", record.value());

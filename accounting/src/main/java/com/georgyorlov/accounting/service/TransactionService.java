@@ -1,6 +1,5 @@
 package com.georgyorlov.accounting.service;
 
-import com.georgyorlov.accounting.entity.BillingCycle;
 import com.georgyorlov.accounting.entity.TransactionEntity;
 import com.georgyorlov.accounting.entity.TransactionType;
 import com.georgyorlov.accounting.repository.TransactionRepository;
@@ -16,21 +15,18 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountService accountService;
-    private final BillingCycleService billingCycleService;
 
     public List<TransactionEntity> findAllTransactionsByBillingCycle(UUID billingPublicId) {
         return transactionRepository.findAllByBillingPublicId(billingPublicId);
     }
 
     @Transactional
-    public void createTransactionEntity(UUID taskPublicId, UUID userPublicId, Long debit, Long credit) {
-        BillingCycle openedBillingCycle = billingCycleService.getOpenedBillingCycle();
-
+    public void createTransactionEntity(UUID taskPublicId, UUID userPublicId, UUID billingPublicId, Long debit, Long credit) {
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.setPublicId(UUID.randomUUID());
         transactionEntity.setTaskPublicId(taskPublicId);
         transactionEntity.setUserPublicId(userPublicId);
-        transactionEntity.setBillingPublicId(openedBillingCycle.getPublicId());
+        transactionEntity.setBillingPublicId(billingPublicId);
         transactionEntity.setCredit(credit);
         transactionEntity.setDebit(debit);
         transactionEntity.setTransactionType(getTransactionType(transactionEntity));
@@ -40,13 +36,11 @@ public class TransactionService {
     }
 
     @Transactional
-    public void createPayment(UUID userPublicId, Long credit) {
-        BillingCycle openedBillingCycle = billingCycleService.getOpenedBillingCycle();
-
+    public void createPayment(UUID userPublicId, UUID billingPublicId, Long credit) {
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.setPublicId(UUID.randomUUID());
         transactionEntity.setUserPublicId(userPublicId);
-        transactionEntity.setBillingPublicId(openedBillingCycle.getPublicId());
+        transactionEntity.setBillingPublicId(billingPublicId);
         transactionEntity.setCredit(credit);
         transactionEntity.setTransactionType(TransactionType.PAYMENT);
         save(transactionEntity);
@@ -71,6 +65,9 @@ public class TransactionService {
     }
 
     public Long getManagementIncomeForBillingCycle(UUID billingPublicId) {
+        // убирать тип payment
+        // сделать разную логику расчета для open и close периодов
+        //
         return transactionRepository.findAllByBillingPublicId(billingPublicId).stream()
             .map(tr -> tr.getDebit() - tr.getCredit())
             .reduce(Long::sum)

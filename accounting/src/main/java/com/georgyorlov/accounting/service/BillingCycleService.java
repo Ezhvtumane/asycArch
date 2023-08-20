@@ -25,6 +25,8 @@ public class BillingCycleService {
 
     @Transactional
     public BillingCycle createAndOpenBillingCycle() {
+        // проверять что больше нет открытых периодов
+        // и переносить отрицательные остати с предыдущего
         BillingCycle billingCycle = new BillingCycle();
         billingCycle.setPublicId(UUID.randomUUID());
         billingCycle.setBillingStatus(BillingStatus.OPEN);
@@ -48,11 +50,12 @@ public class BillingCycleService {
             )
             .forEach((uuid, billingCycleBalance) -> {
                 if (billingCycleBalance > 0) {
-                    transactionService.createPayment(uuid, billingCycleBalance);
-                    //send payment mail
+                    transactionService.createPayment(uuid, openedBillingCycle.getPublicId(), billingCycleBalance); //след период с нуля
+                    // send payment mail
                 } else {
                     // send payment mail
                     // nothing change at account and transactions.
+                    // как перенести - в слудующий билинг период?
                 }
             });
 

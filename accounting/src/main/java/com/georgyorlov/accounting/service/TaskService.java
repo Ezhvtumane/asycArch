@@ -1,5 +1,6 @@
 package com.georgyorlov.accounting.service;
 
+import com.georgyorlov.accounting.entity.BillingCycle;
 import com.georgyorlov.accounting.entity.TaskEntity;
 import com.georgyorlov.accounting.entity.TaskStatus;
 import com.georgyorlov.accounting.repository.TaskRepository;
@@ -17,6 +18,7 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final TransactionService transactionService;
+    private final BillingCycleService billingCycleService;
 
     public void createOrUpdateFromTaskStreaming(TaskStreaming taskStreaming) {
         taskRepository.findByPublicId(UUID.fromString(taskStreaming.getPublicId().toString()))
@@ -31,13 +33,15 @@ public class TaskService {
     }
 
     private void updateTask(TaskEntity taskEntity, TaskStreaming taskStreaming) {
-        taskEntity.setDescription(taskStreaming.getDescription().toString());
+        taskEntity.setTitle(taskStreaming.getTitle().toString());
+        taskEntity.setJiraId(taskStreaming.getJiraId().toString());
         save(taskEntity);
     }
 
     private void createAndSaveTaskEntity(TaskStreaming taskStreaming) {
         TaskEntity taskEntity = new TaskEntity();
-        taskEntity.setDescription(taskStreaming.getDescription().toString());
+        taskEntity.setTitle(taskStreaming.getTitle().toString());
+        taskEntity.setJiraId(taskStreaming.getJiraId().toString());
         taskEntity.setPublicId(UUID.fromString(taskStreaming.getPublicId().toString()));
         taskEntity.setCostAssigning(taskStreaming.getCostAssigning());
         taskEntity.setCostCompleting(taskStreaming.getCostCompleting());
@@ -58,6 +62,7 @@ public class TaskService {
 
     @Transactional
     public void taskAssign(TaskAssign taskAssign) {
+        BillingCycle openedBillingCycle = billingCycleService.getOpenedBillingCycle();
         TaskEntity taskEntity = findByPublicId(UUID.fromString(taskAssign.getTaskPublicId().toString()));
         taskEntity.setUserPublicId(UUID.fromString(taskAssign.getUserPublicId().toString()));
         save(taskEntity);
@@ -65,6 +70,7 @@ public class TaskService {
 
         transactionService.createTransactionEntity(taskEntity.getPublicId(),
                                                    taskEntity.getUserPublicId(),
+                                                   openedBillingCycle.getPublicId(),
                                                    0L,
                                                    taskEntity.getCostAssigning().longValue()
         );
@@ -72,6 +78,7 @@ public class TaskService {
 
     @Transactional
     public void taskComplete(TaskDone taskDone) {
+        BillingCycle openedBillingCycle = billingCycleService.getOpenedBillingCycle();
         TaskEntity taskEntity = findByPublicId(UUID.fromString(taskDone.getTaskPublicId().toString()));
         taskEntity.setUserPublicId(UUID.fromString(taskDone.getUserPublicId().toString()));
         taskEntity.setTaskStatus(TaskStatus.DONE);
@@ -80,6 +87,7 @@ public class TaskService {
 
         transactionService.createTransactionEntity(taskEntity.getPublicId(),
                                                    taskEntity.getUserPublicId(),
+                                                   openedBillingCycle.getPublicId(),
                                                    taskEntity.getCostCompleting().longValue(),
                                                    0L
         );

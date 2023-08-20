@@ -4,13 +4,11 @@ import com.georgyorlov.accounting.dto.UserAccountResponse;
 import com.georgyorlov.accounting.entity.Account;
 import com.georgyorlov.accounting.entity.TransactionEntity;
 import com.georgyorlov.accounting.service.AccountService;
-import com.georgyorlov.accounting.service.BillingCycleService;
 import com.georgyorlov.accounting.service.TransactionService;
 import jakarta.websocket.server.PathParam;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,12 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/accounting")
 @RequiredArgsConstructor
-@EnableMethodSecurity
+//@EnableMethodSecurity
 public class AccountingController {
 
     private final AccountService accountService;
     private final TransactionService transactionService;
-    private final BillingCycleService billingCycleService;
 
     @GetMapping("/{userPublicId}")
     //@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'WORKER')")
@@ -38,6 +35,7 @@ public class AccountingController {
     }
 
     @GetMapping("/management/{billingPublicId}")
+    //@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public Long getManagementIncomeForBillingCycle(@PathParam("billing_public_id") UUID billingPublicId) {
         return transactionService.getManagementIncomeForBillingCycle(billingPublicId);
     }

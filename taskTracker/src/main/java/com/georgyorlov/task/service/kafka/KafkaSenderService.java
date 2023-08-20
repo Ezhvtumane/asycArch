@@ -16,7 +16,7 @@ public class KafkaSenderService {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void sendTaskStreamingEvent(TaskStreaming taskStreamingEventData) {
-        String topicName = "task-streaming";
+        String topicName = "task-streaming-v2";
         log.info("sendTaskStreamingEvent {} to topic {}", taskStreamingEventData, topicName);
         kafkaTemplate.send(topicName, taskStreamingEventData);
     }
