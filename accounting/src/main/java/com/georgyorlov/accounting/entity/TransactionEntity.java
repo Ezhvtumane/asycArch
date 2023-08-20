@@ -1,4 +1,4 @@
-package com.georgyorlov.task.entity;
+package com.georgyorlov.accounting.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,33 +14,34 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "tasks")
-public class TaskEntity {
+@Table(name = "transactions")
+public class TransactionEntity {
 
     @Id
     @GeneratedValue
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title") // migrate name and data in DB
-    private String title;
-
-    @Column(name = "jira_id") // migrate name and data in DB
-    private String jiraId;
-
     @Column(name = "public_id")
     private UUID publicId;
 
-    @Column(name = "task_status")
-    @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus;
+    @Column(name = "billing_public_id")
+    private UUID billingPublicId;
 
     @Column(name = "user_public_id")
     private UUID userPublicId;
 
-    @Column(name = "cost_assigning")
-    private Integer costAssigning;
+    @Column(name = "task_public_id")
+    private UUID taskPublicId;
 
-    @Column(name = "cost_completing")
-    private Integer costCompleting;
+    @Column(name = "debit")
+    private Long debit;
+
+    @Column(name = "credit")
+    private Long credit;
+
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
+
 }

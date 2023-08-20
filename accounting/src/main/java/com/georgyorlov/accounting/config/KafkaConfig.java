@@ -1,4 +1,4 @@
-package com.georgyorlov.task.config;
+package com.georgyorlov.accounting.config;
 
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;

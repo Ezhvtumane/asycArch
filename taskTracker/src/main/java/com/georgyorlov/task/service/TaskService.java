@@ -8,6 +8,7 @@ import com.georgyorlov.task.entity.TaskEntity;
 import com.georgyorlov.task.entity.TaskStatus;
 import com.georgyorlov.task.repository.TaskRepository;
 import com.georgyorlov.task.service.kafka.KafkaSenderService;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -24,14 +25,21 @@ public class TaskService {
     private final KafkaSenderService kafkaSenderService;
     private final UserService userService;
 
+    private static final List<String> validation = Arrays.asList("[", "]"); //props
+
     @Transactional
     public TaskEntity createTaskEntity(TaskCreateDTO taskCreateDTO) {
+        if (validation.stream().anyMatch(s -> taskCreateDTO.getTitle().contains(s))) {
+            throw new RuntimeException("Fix me");
+        }
+
         Random random = new Random();
 
         TaskEntity taskEntity = new TaskEntity();
         taskEntity.setPublicId(UUID.randomUUID());
         taskEntity.setTaskStatus(TaskStatus.IN_PROGRESS);
-        taskEntity.setTitle(taskCreateDTO.getDescription());
+        taskEntity.setTitle(taskCreateDTO.getTitle());
+        taskEntity.setJiraId(taskCreateDTO.getJiraId());
         taskEntity.setUserPublicId(userService.getRandomWorkerPublicId());
         taskEntity.setCostAssigning(random.nextInt(20 - 10) + 10); //-?
         taskEntity.setCostCompleting(random.nextInt(40 - 20) + 20);
@@ -98,6 +106,7 @@ public class TaskService {
         return TaskStreaming.newBuilder()
             .setPublicId(taskEntity.getPublicId().toString())
             .setTitle(taskEntity.getTitle())
+            .setJiraId(taskEntity.getJiraId())
             .setCostAssigning(taskEntity.getCostAssigning())
             .setCostCompleting(taskEntity.getCostCompleting())
             .build();

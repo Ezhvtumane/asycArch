@@ -1,9 +1,9 @@
-package com.georgyorlov.task.service;
+package com.georgyorlov.accounting.service;
 
+import com.georgyorlov.accounting.entity.Role;
+import com.georgyorlov.accounting.entity.UserEntity;
+import com.georgyorlov.accounting.repository.UserRepository;
 import com.georgyorlov.avro.schema.User;
-import com.georgyorlov.task.entity.Role;
-import com.georgyorlov.task.entity.UserEntity;
-import com.georgyorlov.task.repository.UserRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final AccountService accountService;
 
     @Transactional
     public void createOrUpdateFromUserStreaming(User user) {
@@ -43,7 +44,8 @@ public class UserService {
         userEntity.setLogin(user.getLogin().toString());
         userEntity.setRole(Role.valueOf(user.getRole().toString()));
         userEntity.setPublicId(UUID.fromString(user.getPublicId().toString()));
-        save(userEntity);
+        UserEntity saved = save(userEntity);
+        accountService.createAccountForUSer(saved.getPublicId());
     }
 
     private UserEntity save(UserEntity userEntity) {
