@@ -4,9 +4,9 @@ import com.georgyorlov.accounting.entity.BillingCycle;
 import com.georgyorlov.accounting.entity.TaskEntity;
 import com.georgyorlov.accounting.entity.TaskStatus;
 import com.georgyorlov.accounting.repository.TaskRepository;
-import com.georgyorlov.avro.schema.TaskAssign;
-import com.georgyorlov.avro.schema.TaskDone;
-import com.georgyorlov.avro.schema.TaskStreaming;
+import com.georgyorlov.avro.task.v1.TaskCompleted;
+import com.georgyorlov.avro.task.v1.TaskCreated;
+import com.georgyorlov.avro.task.v2.TaskStreaming;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class TaskService {
     private final TransactionService transactionService;
     private final BillingCycleService billingCycleService;
 
-    public void createOrUpdateFromTaskStreaming(TaskStreaming taskStreaming) {
+    public void createOrUpdateFromTaskStreamingV1(com.georgyorlov.avro.task.v1.TaskStreaming taskStreaming) {
         taskRepository.findByPublicId(UUID.fromString(taskStreaming.getPublicId().toString()))
             .ifPresentOrElse(
                 taskEntity -> {
@@ -32,9 +32,35 @@ public class TaskService {
             );
     }
 
+    public void createOrUpdateFromTaskStreamingV2(TaskStreaming taskStreaming) {
+        taskRepository.findByPublicId(UUID.fromString(taskStreaming.getPublicId().toString()))
+            .ifPresentOrElse(
+                taskEntity -> {
+                    updateTask(taskEntity, taskStreaming);
+                },
+                () -> {
+                    createAndSaveTaskEntity(taskStreaming);
+                }
+            );
+    }
+
+    private void updateTask(TaskEntity taskEntity, com.georgyorlov.avro.task.v1.TaskStreaming taskStreaming) {
+        taskEntity.setTitle(taskStreaming.getDescription().toString());
+        save(taskEntity);
+    }
     private void updateTask(TaskEntity taskEntity, TaskStreaming taskStreaming) {
         taskEntity.setTitle(taskStreaming.getTitle().toString());
         taskEntity.setJiraId(taskStreaming.getJiraId().toString());
+        save(taskEntity);
+    }
+
+    private void createAndSaveTaskEntity(com.georgyorlov.avro.task.v1.TaskStreaming taskStreaming) {
+        TaskEntity taskEntity = new TaskEntity();
+        taskEntity.setTitle(taskStreaming.getDescription().toString());
+        taskEntity.setPublicId(UUID.fromString(taskStreaming.getPublicId().toString()));
+        taskEntity.setCostAssigning(taskStreaming.getCostAssigning());
+        taskEntity.setCostCompleting(taskStreaming.getCostCompleting());
+        taskEntity.setTaskStatus(TaskStatus.IN_PROGRESS);
         save(taskEntity);
     }
 
@@ -61,7 +87,7 @@ public class TaskService {
     }
 
     @Transactional
-    public void taskAssign(TaskAssign taskAssign) {
+    public void taskAssign(TaskCreated taskAssign) {
         BillingCycle openedBillingCycle = billingCycleService.getOpenedBillingCycle();
         TaskEntity taskEntity = findByPublicId(UUID.fromString(taskAssign.getTaskPublicId().toString()));
         taskEntity.setUserPublicId(UUID.fromString(taskAssign.getUserPublicId().toString()));
@@ -77,7 +103,7 @@ public class TaskService {
     }
 
     @Transactional
-    public void taskComplete(TaskDone taskDone) {
+    public void taskComplete(TaskCompleted taskDone) {
         BillingCycle openedBillingCycle = billingCycleService.getOpenedBillingCycle();
         TaskEntity taskEntity = findByPublicId(UUID.fromString(taskDone.getTaskPublicId().toString()));
         taskEntity.setUserPublicId(UUID.fromString(taskDone.getUserPublicId().toString()));

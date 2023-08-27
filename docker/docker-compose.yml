@@ -4,7 +4,7 @@ services:
   ms-template:
     image: docker.io/library/template:1.0-SNAPSHOT
     ports:
-      - 8081:8081
+      - 8081:8081 #fix ports
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -77,6 +77,7 @@ services:
       - ./db/task.sql:/docker-entrypoint-initdb.d/task.sql
       - ./db/auth.sql:/docker-entrypoint-initdb.d/auth.sql
       - ./db/accounting.sql:/docker-entrypoint-initdb.d/accounting.sql
+      - ./db/audit_log.sql:/docker-entrypoint-initdb.d/audit_log.sql
       - ./db/keycloak.sql:/docker-entrypoint-initdb.d/keycloak.sql
     environment:
       - POSTGRES_DB=postgres

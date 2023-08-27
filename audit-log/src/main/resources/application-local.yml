@@ -1,0 +1,13 @@
+server:
+  port: 9094
+
+spring:
+  # Spring JDBC configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/audit_log
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  kafka:
+    bootstrap-servers: localhost:29092

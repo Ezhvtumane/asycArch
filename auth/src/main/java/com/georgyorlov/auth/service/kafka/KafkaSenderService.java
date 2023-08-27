@@ -1,6 +1,6 @@
 package com.georgyorlov.auth.service.kafka;
 
-import com.georgyorlov.avro.schema.User;
+import com.georgyorlov.avro.user.v1.UserStreaming;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,8 +13,8 @@ public class KafkaSenderService {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendUserStreamingEvent(User user, String topicName) {
-        log.info("sendUserCreatedEvent {} to topic {}", user, topicName);
+    public void sendUserStreamingEvent(UserStreaming user, String topicName) {
+        log.info("sendUserStreamingEvent {} to topic {}", user, topicName);
         kafkaTemplate.send(topicName, user);
     }
 }

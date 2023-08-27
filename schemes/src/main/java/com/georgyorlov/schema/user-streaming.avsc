@@ -1,7 +1,7 @@
 {
   "type": "record",
-  "name": "User",
-  "namespace": "com.georgyorlov.avro.schema",
+  "name": "UserStreaming",
+  "namespace": "com.georgyorlov.avro.user.v1",
   "fields": [
     {
       "name": "publicId",

@@ -2,6 +2,9 @@
 POST http://localhost:9093/api/billing/open
 Content-Type: application/json
 
+###test
+GET http://localhost:9092/api/task
+Content-Type: application/json
 
 ###Done task
 POST http://localhost:9092/api/task/e291c63e-3fcf-448a-8647-034d2f5fa42d/done
