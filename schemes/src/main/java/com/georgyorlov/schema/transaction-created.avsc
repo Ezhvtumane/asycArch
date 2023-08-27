@@ -1,0 +1,35 @@
+{
+  "type": "record",
+  "name": "TransactionCreated",
+  "namespace": "com.georgyorlov.avro.transaction.v1",
+  "fields": [
+    {
+      "name": "publicId",
+      "type": "string"
+    },
+    {
+      "name": "billing_public_id",
+      "type": "string"
+    },
+    {
+      "name": "user_public_id",
+      "type": "string"
+    },
+    {
+      "name": "task_public_id",
+      "type": "string"
+    },
+    {
+      "name": "debit",
+      "type": "long"
+    },
+    {
+      "name": "credit",
+      "type": "long"
+    },
+    {
+      "name": "transaction_type",
+      "type": "string"
+    }
+  ]
+}

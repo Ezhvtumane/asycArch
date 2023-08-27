@@ -2,7 +2,7 @@
   {
     "type": "record",
     "name": "TaskStreaming",
-    "namespace": "com.georgyorlov.avro.schema",
+    "namespace": "com.georgyorlov.avro.task.v2",
     "fields": [
       {
         "name": "title",
@@ -28,31 +28,24 @@
   },
   {
     "type": "record",
-    "name": "TaskAssign",
-    "namespace": "com.georgyorlov.avro.schema",
+    "name": "TaskStreaming",
+    "namespace": "com.georgyorlov.avro.task.v1",
     "fields": [
       {
-        "name": "taskPublicId",
+        "name": "description",
         "type": "string"
       },
       {
-        "name": "userPublicId",
-        "type": "string"
-      }
-    ]
-  },
-  {
-    "type": "record",
-    "name": "TaskDone",
-    "namespace": "com.georgyorlov.avro.schema",
-    "fields": [
-      {
-        "name": "taskPublicId",
+        "name": "publicId",
         "type": "string"
       },
       {
-        "name": "userPublicId",
-        "type": "string"
+        "name": "costAssigning",
+        "type": "int"
+      },
+      {
+        "name": "costCompleting",
+        "type": "int"
       }
     ]
   }
