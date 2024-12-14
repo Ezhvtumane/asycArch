@@ -3,7 +3,7 @@ package com.georgyorlov.accounting.service;
 import com.georgyorlov.accounting.entity.Role;
 import com.georgyorlov.accounting.entity.UserEntity;
 import com.georgyorlov.accounting.repository.UserRepository;
-import com.georgyorlov.avro.schema.User;
+import com.georgyorlov.avro.user.v1.UserStreaming;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class UserService {
     private final AccountService accountService;
 
     @Transactional
-    public void createOrUpdateFromUserStreaming(User user) {
+    public void createOrUpdateFromUserStreaming(UserStreaming user) {
         userRepository
             .findByPublicId(UUID.fromString(user.getPublicId().toString()))
             .ifPresentOrElse(
@@ -34,12 +34,12 @@ public class UserService {
         return userRepository.getRandomWorkerEntity().getPublicId();
     }
 
-    private void updateUser(UserEntity userEntity, User user) {
+    private void updateUser(UserEntity userEntity, UserStreaming user) {
         userEntity.setRole(Role.valueOf(user.getRole().toString()));
         save(userEntity);
     }
 
-    private void createAndSaveUserEntity(User user) {
+    private void createAndSaveUserEntity(UserStreaming user) {
         UserEntity userEntity = new UserEntity();
         userEntity.setLogin(user.getLogin().toString());
         userEntity.setRole(Role.valueOf(user.getRole().toString()));

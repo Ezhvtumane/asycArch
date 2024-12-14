@@ -1,8 +1,9 @@
 package com.georgyorlov.task.service.kafka;
 
-import com.georgyorlov.avro.schema.TaskAssign;
-import com.georgyorlov.avro.schema.TaskDone;
-import com.georgyorlov.avro.schema.TaskStreaming;
+
+import com.georgyorlov.avro.task.v1.TaskCompleted;
+import com.georgyorlov.avro.task.v1.TaskCreated;
+import com.georgyorlov.avro.task.v2.TaskStreaming;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -15,21 +16,27 @@ public class KafkaSenderService {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendTaskStreamingEvent(TaskStreaming taskStreamingEventData) {
-        String topicName = "task-streaming-v2";
+    public void sendTaskStreamingEventV1(com.georgyorlov.avro.task.v1.TaskStreaming taskStreamingEventData) {
+        String topicName = "task-streaming";
         log.info("sendTaskStreamingEvent {} to topic {}", taskStreamingEventData, topicName);
         kafkaTemplate.send(topicName, taskStreamingEventData);
     }
 
-    public void sendTaskAssignEvent(TaskAssign taskAssignEventData) {
-        String topicName = "task-assigned";
-        log.info("sendTaskLifecycleEvent {} to topic {}", taskAssignEventData, topicName);
+    public void sendTaskStreamingEvent(TaskStreaming taskStreamingEventData) {
+        String topicName = "task-streaming";
+        log.info("sendTaskStreamingEvent {} to topic {}", taskStreamingEventData, topicName);
+        kafkaTemplate.send(topicName, taskStreamingEventData);
+    }
+
+    public void sendTaskCreatedEvent(TaskCreated taskAssignEventData) {
+        String topicName = "task-created";
+        log.info("sendTaskCreatedEvent {} to topic {}", taskAssignEventData, topicName);
         kafkaTemplate.send(topicName, taskAssignEventData);
     }
 
-    public void sendTaskDoneEvent(TaskDone taskDoneEventData) {
-        String topicName = "task-done";
-        log.info("sendTaskLifecycleEvent {} to topic {}", taskDoneEventData, topicName);
+    public void sendTaskCompletedEvent(TaskCompleted taskDoneEventData) {
+        String topicName = "task-completed";
+        log.info("sendTaskCompletedEvent {} to topic {}", taskDoneEventData, topicName);
         kafkaTemplate.send(topicName, taskDoneEventData);
     }
 

@@ -1,8 +1,8 @@
 package com.georgyorlov.task.service;
 
-import com.georgyorlov.avro.schema.TaskAssign;
-import com.georgyorlov.avro.schema.TaskDone;
-import com.georgyorlov.avro.schema.TaskStreaming;
+import com.georgyorlov.avro.task.v1.TaskCompleted;
+import com.georgyorlov.avro.task.v1.TaskCreated;
+import com.georgyorlov.avro.task.v2.TaskStreaming;
 import com.georgyorlov.task.dto.TaskCreateDTO;
 import com.georgyorlov.task.entity.TaskEntity;
 import com.georgyorlov.task.entity.TaskStatus;
@@ -48,8 +48,8 @@ public class TaskService {
         TaskStreaming taskStreamingEventData = createTaskStreamingEventData(savedTask);
         kafkaSenderService.sendTaskStreamingEvent(taskStreamingEventData);
 
-        TaskAssign taskAssignEventData = createTaskAssignEventData(taskEntity.getPublicId(), taskEntity.getUserPublicId());
-        kafkaSenderService.sendTaskAssignEvent(taskAssignEventData);
+        TaskCreated taskAssignEventData = createTaskAssignEventData(taskEntity.getPublicId(), taskEntity.getUserPublicId());
+        kafkaSenderService.sendTaskCreatedEvent(taskAssignEventData);
         return savedTask;
     }
 
@@ -64,8 +64,8 @@ public class TaskService {
         byPublicId.setTaskStatus(TaskStatus.DONE);
         TaskEntity savedTask = save(byPublicId);
 
-        final TaskDone createTaskDoneEventData = createTaskDoneEventData(savedTask.getPublicId(), savedTask.getUserPublicId());
-        kafkaSenderService.sendTaskDoneEvent(createTaskDoneEventData);
+        final TaskCompleted createTaskDoneEventData = createTaskDoneEventData(savedTask.getPublicId(), savedTask.getUserPublicId());
+        kafkaSenderService.sendTaskCompletedEvent(createTaskDoneEventData);
 
         return savedTask;
     }
@@ -84,19 +84,19 @@ public class TaskService {
 
     @Async
     public void sendTaskAssignedEvent(TaskEntity task) {
-        TaskAssign taskAssignEventData = createTaskAssignEventData(task.getPublicId(), task.getUserPublicId());
-        kafkaSenderService.sendTaskAssignEvent(taskAssignEventData);
+        TaskCreated taskCreatedEventData = createTaskAssignEventData(task.getPublicId(), task.getUserPublicId());
+        kafkaSenderService.sendTaskCreatedEvent(taskCreatedEventData);
     }
 
-    private TaskAssign createTaskAssignEventData(UUID taskPublicId, UUID userPublicId) {
-        return TaskAssign.newBuilder()
+    private TaskCreated createTaskAssignEventData(UUID taskPublicId, UUID userPublicId) {
+        return TaskCreated.newBuilder()
             .setTaskPublicId(taskPublicId.toString())
             .setUserPublicId(userPublicId.toString())
             .build();
     }
 
-    private TaskDone createTaskDoneEventData(UUID taskPublicId, UUID userPublicId) {
-        return TaskDone.newBuilder()
+    private TaskCompleted createTaskDoneEventData(UUID taskPublicId, UUID userPublicId) {
+        return TaskCompleted.newBuilder()
             .setTaskPublicId(taskPublicId.toString())
             .setUserPublicId(userPublicId.toString())
             .build();

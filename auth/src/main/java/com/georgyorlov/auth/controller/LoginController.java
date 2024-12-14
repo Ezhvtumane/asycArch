@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 public class LoginController {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final static String keycloakUrl = "http://localhost:8484/auth/realms/aa-realm/protocol/openid-connect/token";
+    private final static String keycloakUrl = "http://localhost:8484/realms/aa-realm/protocol/openid-connect/token";
 
     @PostMapping("/login")
     public String login(

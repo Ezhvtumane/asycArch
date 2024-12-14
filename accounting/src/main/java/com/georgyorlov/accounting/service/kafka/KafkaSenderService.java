@@ -1,35 +1,35 @@
 package com.georgyorlov.accounting.service.kafka;
 
+import com.georgyorlov.avro.transaction.v1.TransactionCreated;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.header.Header;
+import org.apache.kafka.common.header.internals.RecordHeader;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class KafkaSenderService {
-/*
+
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendTaskStreamingEvent(TaskStreaming taskStreamingEventData) {
-        String topicName = "task-streaming";
-        log.info("sendTaskStreamingEvent {} to topic {}", taskStreamingEventData, topicName);
-        kafkaTemplate.send(topicName, taskStreamingEventData);
-    }
+    public void sendTransactionCreatedEvent(TransactionCreated transactionCreated) {
+        String topicName = "transaction-created";
+        log.info("sendTransactionCreatedEvent {} to topic {}", transactionCreated, topicName);
 
-    public void sendTaskDoneEvent(TaskDone taskDoneEventData) {
-        String topicName = "task-lyfecycle";
-        log.info("sendTaskLifecycleEvent {} to topic {}", taskDoneEventData, topicName);
-        kafkaTemplate.send(topicName, taskDoneEventData);
-    }
+        List<Header> headers = new ArrayList<>();
+        headers.add(new RecordHeader("version", "v1".getBytes()));
 
-    public void sendTaskAssignEvent(TaskAssign taskAssignEventData) {
-        String topicName = "task-lyfecycle";
-        log.info("sendTaskLifecycleEvent {} to topic {}", taskAssignEventData, topicName);
-        kafkaTemplate.send(topicName, taskAssignEventData);
+        ProducerRecord<String, Object> record = new ProducerRecord<>(topicName, null, "transaction", transactionCreated, headers);
+
+        kafkaTemplate.send(record);
     }
-*/
 
     //cud событие таска - task-streaming?
     //be событие task.lyfecycle?

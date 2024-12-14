@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "TaskCompleted",
+  "namespace": "com.georgyorlov.avro.task.v1",
+  "fields": [
+    {
+      "name": "taskPublicId",
+      "type": "string"
+    },
+    {
+      "name": "userPublicId",
+      "type": "string"
+    }
+  ]
+}

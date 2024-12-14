@@ -12,7 +12,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8484/auth/realms/aa-realm/protocol/openid-connect/certs
+          jwk-set-uri: http://localhost:8484/realms/aa-realm/protocol/openid-connect/certs
 
   # Spring Data JPA configuration
   jpa:

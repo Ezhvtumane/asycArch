@@ -3,6 +3,8 @@ package com.georgyorlov.accounting.service;
 import com.georgyorlov.accounting.entity.TransactionEntity;
 import com.georgyorlov.accounting.entity.TransactionType;
 import com.georgyorlov.accounting.repository.TransactionRepository;
+import com.georgyorlov.accounting.service.kafka.KafkaSenderService;
+import com.georgyorlov.avro.transaction.v1.TransactionCreated;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountService accountService;
+    private final KafkaSenderService kafkaSenderService;
 
     public List<TransactionEntity> findAllTransactionsByBillingCycle(UUID billingPublicId) {
         return transactionRepository.findAllByBillingPublicId(billingPublicId);
@@ -33,6 +36,19 @@ public class TransactionService {
         save(transactionEntity);
 
         accountService.updateUserAccount(userPublicId, debit, credit);
+
+        TransactionCreated transactionStreaming = TransactionCreated
+            .newBuilder()
+            .setPublicId(transactionEntity.getPublicId().toString())
+            .setBillingPublicId(transactionEntity.getBillingPublicId().toString())
+            .setUserPublicId(transactionEntity.getUserPublicId().toString())
+            .setTaskPublicId(transactionEntity.getTaskPublicId().toString())
+            .setDebit(transactionEntity.getDebit())
+            .setCredit(transactionEntity.getCredit())
+            .setTransactionType(transactionEntity.getTransactionType().name())
+            .build();
+
+        kafkaSenderService.sendTransactionCreatedEvent(transactionStreaming);
     }
 
     @Transactional
@@ -46,6 +62,19 @@ public class TransactionService {
         save(transactionEntity);
 
         accountService.updateUserAccount(userPublicId, 0L, credit);
+
+        TransactionCreated transactionCreated = TransactionCreated
+            .newBuilder()
+            .setPublicId(transactionEntity.getPublicId().toString())
+            .setBillingPublicId(transactionEntity.getBillingPublicId().toString())
+            .setUserPublicId(transactionEntity.getUserPublicId().toString())
+            .setTaskPublicId(transactionEntity.getTaskPublicId().toString())
+            .setDebit(transactionEntity.getDebit())
+            .setCredit(transactionEntity.getCredit())
+            .setTransactionType(transactionEntity.getTransactionType().name())
+            .build();
+
+        kafkaSenderService.sendTransactionCreatedEvent(transactionCreated);
     }
 
 

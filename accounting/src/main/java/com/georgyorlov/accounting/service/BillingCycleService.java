@@ -25,6 +25,7 @@ public class BillingCycleService {
 
     @Transactional
     public BillingCycle createAndOpenBillingCycle() {
+        // findLast для переходного периода
         // проверять что больше нет открытых периодов
         // и переносить отрицательные остати с предыдущего
         BillingCycle billingCycle = new BillingCycle();
@@ -59,6 +60,7 @@ public class BillingCycleService {
                 }
             });
 
+        //отправка BE события что (БЦ зарылся) нет - скорее про транзакции и БЕ по транзакциям.
         openedBillingCycle.setBillingStatus(BillingStatus.CLOSE);
         openedBillingCycle.setClosedAt(Instant.now());
         return save(openedBillingCycle);
